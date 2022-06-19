@@ -1,0 +1,52 @@
+the question which makes us confused a lot [MASK] not even discussed.
+the girl who I told you about [MASK] my next door neighbour.
+that student who have not got his textbooks [MASK] raising hands.
+the doctors who takes the operations for the patient [MASK] sweating a lot.
+the passage which are read by students [MASK] very hard understood.
+the agreement which was reached by two parties [MASK] is overturned.
+a pair of golden shoes which people found in the tombs [MASK] now conserved by one museum.
+that teacher who introduces herself to students [MASK] very friendly.
+two apples which fall on his head [MASK] heavy.
+that group of girls who people are looking at [MASK] appointed to one place far from the city.
+a library where they keep books [MASK] located in the west of the city.
+the government which promises to cut taxes [MASK] popular.
+my parents who promised to help me with my homework [MASK] busy now.
+the director who promised to cut the prices now [MASK] his words
+children who rely on their mother [MASK] not care of their things.
+birds stand in a small garden [MASK] flying to the next house.
+a kind man who is always ready to help others [MASK] granted rewards.
+the book called swear words [MASK] a bad thing.
+a sampling of the books that is on the shelf [MASK] given to students.
+a box of tools that my friend gave to me [MASK] used by my Dad now.
+everything that you may want to use for your dishes [MASK] in the wardrobe.
+a food scientist who appeal to eat green vegetables [MASK] attacked.
+the books which were recommended by the professor [MASK] read by me.
+serious illness which may cause deaths [MASK] scary to people.
+that group of international students who come from different countries [MASK] invited to that party.
+that doctor who tell people to wear masks [MASK] threaten to be killed.
+my roommates who are infected with virus [MASK] upset.
+oranges which contains much juice and vitamin C [MASK] considered good.
+that pair of sunglasses which is bought by my parents [MASK] cool.
+one mobile phone which may contain many applications [MASK] thought as a necessity.
+my sisters and brothers who study in another country [MASK] missing home a lot.
+transnational companies which spread all the world [MASK] profitable.
+cups which look good sometimes [MASK] not endurable.
+drops of water which fall on his shoulder [MASK] very clean.
+my laptop which is assembled by different companies [MASK] highly compatible.
+the different pages of my phone whose colours are different [MASK] cool to look at.
+international community which call people to reduce co2 [MASK] attacked.
+an array of trees which stand along the road [MASK] green and straight.
+papers which is written by the doctor [MASK] white and black.
+special tokens which have been added in the corpus [MASK] selected by the designer.
+associated word embeddings which are fine-tuned and trained [MASK] in the model.
+the road which spans 6 miles [MASK] called a death road.
+masks which is worn by the joker [MASK] made by that man.
+a class of students who listen to the teacher's lesson [MASK] appraised by the president.
+a coin which has two sides [MASK] made of gold.
+a creature which has six eyes [MASK] scary.
+texts which in the textbook [MASK] short and concise.
+a journey which has thousands of miles [MASK] tiring.
+a large variety of birds which includes eagles and swallows [MASK] flying in the sky.
+songs which are put in one album [MASK] bought by me.
+
+

@@ -1,0 +1,26 @@
+1.char和varchar
+char：定长
+varchar：变长
+（1）存储：
+定长和变长是根据char（5）和varchar（5）限制字符的个数来定的：
+例如"理解 "（有3个字符）
+存储的时候：char（5）会存5个字符，varchar（5）只会存3个字符
+（2）取数：
+char（5） select name from t1 只会返回"理解"（2个字符）
+varchar（5）select name from t2 会返回"理解 "（有3个字符）
+
+2. char类型：
+A. 理解    "，返回"理解"
+B. "      理解" 返回 "      理解"
+C. "理    解" 返回 "理    解"
+D. 如果超过了char(5)的长度，则只存前5个，所有的信息都是存5个bytes
+
+3. varchar类型：varchar(5)
+A. "aj" 存1byte + "aj" = 3 bytes    最开始的1 byte是用来记录后面的数据的长度
+B. "ajdaf" 存1byte + "ajdaf" = 6 bytes
+C. "ajagagagaga" 存1byte + "ajaga" = 6 bytes
+D. 如果超过了char(5)的长度，则只存前5个，所有的信息都是存5个bytes
+
+
+4. 如果要存很大的文件：视频等
+mysql可以只存路径，然后可以去别的机器上去下载

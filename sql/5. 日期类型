@@ -1,0 +1,14 @@
+1. 取现在时间now()
+create table t1 value(id int, name char(5), born year, birthdate date, classtime time, registertime datetime);
+insert t1 value（1，"zhou"，now(), now(), now(),now());
+year: 2018
+date: 2018-01-10
+time: 22:10:09
+datetime: 2018-01-10 22：10：09
+
+2. 时间是有范围的
+datetime：表示时间更广：1000-9999， 储存需要8个字节
+timestamp：表示时间宽度更窄：1970=2038，储存需要4个字节，与时区有关
+
+
+

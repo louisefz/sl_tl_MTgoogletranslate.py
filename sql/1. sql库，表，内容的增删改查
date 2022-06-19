@@ -1,0 +1,62 @@
+1. 库，表，记录的sql语句
+（1）库：文件夹
+增：
+create database db1 charset utf8
+
+查：
+查看建的数据库
+use db1;
+show tables;
+或 show create database db1;
+查看所有的数据库：
+show databses
+
+改：
+alter database db1 charset gbk; #改库的charset
+query ok, 1 row: 只要成功了 row就会》=1，如果没改成功，row为0
+
+删：
+drop database db1;
+
+
+（2）表：文件
+切换库： use db1
+select database(); 查看当前所在的文件夹（库）
+增：create table t1(id int, name char);
+查：show create table t1;
+show tables
+describe（desc）:desc t1
+
+改：(改字段)
+alter table t1 modify name char(6); #改表t1中的name字段的字符长度，改成最多为6个字符  只能改字段的属性，比如说char改成char(6)
+alter table t1 change name NAME char(7); #将t1中的字段name名称改成大写的NAME，把char改成char(7)
+
+删：
+drop table t1
+
+
+
+（3）记录：文件内容
+增：
+insert (into) t1(id,name) value(1, "zhou"),(2, "fan"),(3,"jie")
+insert (into) t1 value(1, "zhou"),(2, "fan"),(3,"jie");
+into可写可不写
+查：
+select id,name from db1.t1;
+select id from db1.t1;
+select * from db1.t1;
+
+改：
+update db1.t1 set name="SB"; # 把所有的name搞成SB
+update db1.t1 set name="SX" where id=1;
+
+删：
+delete from t1; #删除表中所有的内容
+delete from t1 where id=2; #删除表id=2那一行内容
+
+
+2. 停止运行sql语句：
+（1）\c或者ctrl+c
+（2）如果少写了一个引号：则下一行需要时'\c 需要跟上面的进行配对
+
+<img class="maxed responsive-img" itemprop="contentUrl" alt="The Eurostar in London. UK travellers to France are banned from Saturday." src="https://i.guim.co.uk/img/media/9e792bebc4724df14bd98ee83b8a4f07ec45b725/0_250_4124_2476/master/4124.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=ad3aae1c9312582860ff3c52d51fd1a6">

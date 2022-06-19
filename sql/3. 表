@@ -1,0 +1,69 @@
+1. 存储引擎：就是文件的类型或成为表的类型（有的放在内存里，有的放在硬盘上，支持的功能不一样）
+txt，excel，png文件类型
+
+2. 查看mysql支持的存储引擎
+show engines;
+
+只会用到：InnoDB（存在硬盘上的）:默认的default
+A. InnoDB 支持：
+（1）transaction:
+（2） row-level locking: 行级锁，保证数据安全
+（3） foreign keys:外键，创建表之间的关系
+
+B. 还有支持引擎类型有：memory（存在内存上）：临时表，临时存放的数据
+
+C. blackhole：黑洞存储引擎：存在这里的数据都会消失，可以用在垃圾数据的存储（垃圾数据的删除）
+
+create table t1 (id int, name char) engine=innodb; #存在硬盘上，可以查询
+create table t2 (id int, name char) engine=memory; #当关闭mysql的时候，内存被清除了，此时t2为empty table
+create table t3 (id int, name char) engine=blackhole; # t3会立即变成empty table
+
+
+A. InnoDB:在文件夹中上对应两个文件frm（frame文件，表结构，存在内存）和idb（存储数据的文件，数据文件，存在硬盘）
+B. memory：对应一个文件frm（frame文件，存在内存）
+C. blackhole：对应一个文件（frame文件，存在内存）
+
+
+3. 修改表（表名，添加字段，删除字段，修改字段） alter
+（1）修改表名
+alter Table t1 rename t2； #把表名t1改成t2
+
+（2）增加字段：
+A. alter table t1 add gender(字段名称） char（数据类型）[可有可无的东西]，add gender(字段名称） char（数据类型）[可有可无的东西]
+同时添加多个字段
+B. 把添加的字段放在第一个字段
+alter table t1 add gender char [可有可无的东西] first;
+C. 把添加的字段放在某一个已有字段的后面
+alter table t1 add gender char [可有可无的东西] after name; #把gender放在name之后
+
+（3）删除字段
+alter table t1 drop gender; # 删除t1中的gender字段
+
+（4）修改字段
+A. 改字段的数据类型
+alter table t1 modify name 新数据类型varchar; # 把name的数据类型改成varchar
+
+B. 改字段名
+alter table t1 change 旧字段名 新字段名 旧数据类型/新数据类型;
+alter table t1 change name NAME varchar;
+alter table t1 change name NAME text;
+
+4. 删除表 drop
+drop table t1
+
+5. 将横向的表格，改成纵向的表格  在sql语句后直接加\G
+select (*) from db1.t1\G
+左侧是字段名，右侧是字段的具体的值
+
+6. desc/show和select(*)的区别
+desc/show:显示的是表结构，只显示字段名称和字段类型
+select(*) 则是显示表的数据，包括表的字段和字段的具体的值
+
+7. 复制表：
+A. 复制的既有表的结构也有表的值（表的具体数据）：
+create table t1 select (*) from t3;
+
+B. 只复制表的结构，不要具体的值（不要数据）：
+（1）create table t1 select (*) from t3 where 1>4；(这里1>4是不成立的，说明没有数据是这样的，所以查询的值为空，只会复制表的结构)
+（2）用like语句：
+create table t1 like t3；

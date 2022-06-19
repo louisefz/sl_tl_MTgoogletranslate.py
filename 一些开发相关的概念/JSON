@@ -1,0 +1,73 @@
+1. JSON的主要形式：
+（1）键值对 key-value pair
+（2）JSON的数据类型和python数据类型的对应
+JSON            Python
+object          dict
+arrary          list
+string          unicode
+number(int)     int,long
+number(real)    float
+TRUE            TRUE
+FALSE           FALSE
+null            None
+
+2. POST方法请求有道翻译，实现思路
+（1）头部分析，找到关键POST请求/相应过程  动态的xhr请求
+（2）从请求的URL reuqest url
+（3）获取和构造post表单form
+（4）request.post方法提交翻译请求
+（5）实现控制台输入词语触发翻译，即在pycharm上输入待翻译的文本，饭后得到翻译的结果
+
+
+
+3. 核心的思路
+（1）reuqest的post请求方法
+reuqests.post(url,data=data)
+参数1：url：request url在动态的xhr中可以找到
+参数2：data=data 提交的放入表单form
+例子：response = requests.post("https://xxx.xxx", data = form)
+（2）JSON字符串转化成Python对应格式
+->json.loads(json_str)
+->loads方法把JSON格式字符串解码成Python的对应对象
+-> 例子：
+json_str的type是object，对应pyton中的dict
+json_str = '{
+                "hero" : [
+                    {
+                        "firstName" : "Peter",
+                        "lasttName" : "Parker",
+                        "nickName" : "Spider Man"
+                    }
+                  ],
+                  "badman" : "kraven the Hunter"
+            }'
+将json_str转化成python的操作对象
+result = json.loads(json_str)  #转化成python的dict
+nickname = result["hero"][0]["nickName"]  #逐级索引：
+<1>["hero"]为一个key，对应的value是是一个list；
+<2>对list进行索引，得到list中位置为0，得到另一个dict；
+<3>对dict进行索引，找到key["nickName"]的value"Spider Man"
+
+
+4. 需要的要素所在的位置
+（1）request url:
+在检查中，xhr中的header》》genderal》》request url
+https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule
+（2）form data表单数据
+在检查中，xhr中的Payload》》Form Data
+
+i: 我们while
+from: AUTO
+to: AUTO
+smartresult: dict
+client: fanyideskweb
+salt: 16398427136297
+sign: de1e5c43e4297de55d0c947d25c7ae34
+lts: 1639842713629
+bv: a9c06578fcaa460614d7467f0dcef37a
+doctype: json
+version: 2.1
+keyfrom: fanyi.web
+action: FY_BY_REALTlME
+
+

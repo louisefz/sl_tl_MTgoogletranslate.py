@@ -1,0 +1,5 @@
+1. 单选enum，多选set
+insert into t1 value(id int, gender enum("male", "female", "other"), level enum("vip1","vip2"),hobbies set("read'，"run"，"shopping"，"cooking");
+
+
+<a class="word dynamictext" href="/dictionary/abase">abase</a>

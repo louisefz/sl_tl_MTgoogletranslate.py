@@ -1,0 +1,151 @@
+1. null 和 default
+（1）默认情况下，可以为空
+（2）not null：
+A. 不能为空，则会报错
+B. 如果不报错，则需要加一个not null default "male"
+例如：
+create table t1(id int, name char(6), gender enum("male"."female") not null default "male");
+insert t1(id, name) values(1,"jake")；
+则这种情况下，gender这一选项会默认填充"male"
+
+2. unique key
+(1)单列唯一:对每一行进行唯一化
+A. create table t1(id int unique, NAME char(10) unique)
+B. create table t1(id int, NAME char(10), unique(id), unique(NAME))
+
+(2) 联合唯一：mul unique key
+IP可以不唯一
+port可以不唯一
+IP+port 必须唯一
+所以：create table t1(id int unique, IP char(15),port int, unique(IP,port))
+
+3. primary key,自带unique key的效果
+（1）单行主键
+primary key = not null + unique key
+对于innodb存储引擎，建一张表，必须自己指定一个主键
+
+一般是id作为主键，默认情况下不为空; 如果传空的话则会变成0，primary key自带unique key的效果
+create table t1(id int primary key)
+
+
+（2）复合主键primary key(a, b)
+create table t1(IP char(15),port int, primary key(IP,port))
+
+
+
+4. auto increment自增长字段
+create table t1(id int primary key auto_increment)
+如果使用auto_increment，则必须给其约束一个key，id用primary key
+这个时候：只用在表中插入除了id之外的字段的值，id会自动增长，默认auto_increment_offset从1开始增长，步长auto_increment_increment为1
+但如果要插入id的值，也可以，那么自动增长会从这个插入的值开始自动增长，例如，插入id=7，则自动增长序列变成1，2，3，7，8，9
+
+（2）查询步长和初始值
+show variables like "auto_incr%"
+auto_increment_offset : 起始偏移量
+auto_increment_increment：步长
+起始偏移量应该<=步长
+set session auto_increment_increment = 5  （临时有效）
+set global auto_increment_increment = 5
+auto_increment_offset = 4/5/3/2/1 必须<=5
+
+设置完global之后，需要exit，才能生效
+
+
+（3） 清空表：
+A.普通清空表，没有重置auto_increment,会导致id增长继续会从原来被删之前的值开始增长，而不是从1开始增长
+delete from t1;#表中所有的信息都会被清空，但增长的信息没有被清空
+delete 运用场景：只是跟where语句一起用，清空特定固定范围的表内容和记录：
+delete from t1 where id <=3;
+
+B. 初始起始偏移量用truncate清空
+truncate t1; 起始偏移量是从1开始
+
+
+5. foreign key：建立表之间的关系
+t1.dep_id = t2.id
+A.
+(1)先建被关联的表(补充表),并需要保证被关联表的字段的唯一性，被映射值得唯一性才能保证主表的正常映射
+create table t2(id int unique(或者用primary key), comment char(10));
+(2) 再建主表
+create table t1(id int, sex enum("male", "female"), dept_id int, foreign key(dept_id) references t2(id));
+
+foreign key(主表.dept_id) references 副表(id)
+
+B. 插入数据
+（1）先插入被关联的表t2
+insert into t2 values
+(1, "IT", "技术能力有限"),
+(2, "销售", "销售能力有限"),
+(3, "财务", "财务能力有限")；
+
+（2）再插入关联主表t1
+insert into t2 values
+(1, "egon", "female", 1),
+(2, "alex", "male", 2),
+(3, "wxx", "male", 3)；
+
+C. 删除
+（1）删除表的数据
+先删除主表t1中的数据
+delete from t1 where dept_id = 2;
+
+再删除被关联表的数据
+delete from t2 where id = 2;
+但这种方法很麻烦
+
+（2）删除表
+先删除主表t1，再删除被关联的表t2
+drop table t1;
+drop table t2;
+
+
+（3）方法二删除表的数据：从创建关联主表下手：
+create table t1(id int, sex enum("male", "female"), dept_id int, foreign key(dept_id) references t2(id) on delete cascade on update cascade);
+此时有：foreign key(dept_id) references t2(id) on delete cascade on update cascade
+
+其中
+on delete cascade表示：在t2被关联表删除某些内容的时候，与t1关联主表同步
+on update cascade表示：在t2被关联表更新某些内容的时候，与t1关联主表同步
+
+更新表信息：
+update t2 set id=3333 where id=3;
+此时t2的表中id=3变成了id=333，t1中dept_id=3的也变成了 dept_id=333
+
+
+
+实际运用中，考虑到表的扩展性，不能直接建立明面上的foreign key强制关系，因为它有很多限制关系，因此可以建立表之间的逻辑关系。
+
+单词和句子：
+salt: 16398457332409
+sign: 2fd17b2d445877cf54ad297fad8882a6
+lts: 1639845733240
+
+一段：
+salt: 16398449347120
+sign: 03e26a824f49794a185f76c6bd61a4a9
+lts: 1639844934712
+
+两段：
+sign: c66bf116303574baec99d7e132fb4ef4
+lts: 1639845952954
+bv: a9c06578fcaa460614d7467f0dcef37a
+
+三段：
+sign: d16e57f26a63a27f26c05965fd5828cf
+lts: 1639846000306
+bv: a9c06578fcaa460614d7467f0dcef37a
+
+salt: 16398459996315
+sign: cf72509cfc84e06f373898055d842a11
+lts: 1639845999631
+
+salt: 16398460630419
+sign: 04c53da7aecf41b9aff38698d847e1f5
+lts: 1639846063041
+
+
+
+
+
+
+

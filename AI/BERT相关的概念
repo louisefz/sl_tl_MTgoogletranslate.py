@@ -1,0 +1,100 @@
+1. 总结embedding有以下三个作用：
+（1）通过计算用户和物品或物品和物品的Embedding相似度，来缩小推荐候选库的范围。
+（2）实现高维稀疏特征向量向低维稠密特征向量的转换。
+（3）训练好的embedding可以当作输入深度学习模型的特征
+
+
+
+2.BERT 整体模型架构
+BERT的整体架构是用的transformer的encoder部分：两者相似，但有不同，不同点主要在于input
+
+transformer：
+（1）input 输入部分
+A. input enbedding：做词的词向量，例如随机初始化或用w2v
+B. positional encoding: 位置编码
+在transformer中，positional encoding用的是三角函数（正余弦函数）
+（2）multi-head attention 多头注意力机制
+（3）FNN 前馈神经网络
+
+bert:
+（1）input
+在bert中，input包括 token embedding + segment embedding + position embedding
+这里的postion embedding对应的是transformer中的positional encoding
+
+A.input: [CLS] my dog is cute [SEP] he likes play ##ing [SEP]
+2种特殊符号：[CLS], [SEP]，这两种符号的存在是因为bert预训练中有一种任务名为：NSP任务(next sentence prediction，主要判断两个句子之间的关系)。
+所以需要用符号告诉模型，有两个任务。
+
+B. token embedding:
+对A.input所有的符号和词汇做token embedding：例如随机初始化
+
+C. segment embedding：
+因为处理的是两个句子，因此需要对两个句子进行区分
+from [cls] to [sep]:全都用0来表示
+from [he] to [sep]:全部都用1来表示
+
+D. position embedding：
+bert用的随机初始化，让模型自己学习出来
+transformer用的是正余弦函数
+
+NSP的二分类任务：句子之间是什么关系的二分类任务，就是加上[CLS],在[CLS]的输出向量接一个二分类器从而处理二分类任务。
+[CLS]输出向量：不代表整个句子或者两句的语义信息
+
+
+
+
+
+
+
+
+
+
+
+bert使用的是多个encoder堆叠在一起，bert base 12层encoder ； bert large 24层encoder
+
+
+
+
+
+3. 如何预训练 MLM（mask language model） + NSP(next sentence prediction)
+
+(A)MLM： mask language model
+bert处理的文本是没有标签的，因此需要用无监督模型来做
+包括两种模型：
+eg.我爱吃饭。
+(1) AR模型：自回归模型，按照语序处理单侧的信息，也就是条件概率
+p(我爱吃饭） = p(我) * p(爱|我) * p(吃|我爱) * p(饭|我爱吃)
+(2) AE模型：从被部分掩码的信息中（被部分损坏信息的信息中心）得到被掩码（被损坏）的信息，可以使用上下文的信息
+我爱mask饭
+p(我爱吃饭|我爱mask饭) = p(mask = 吃|我爱饭)
+
+MLM缺点：
+我爱 mask mask
+p(我爱吃饭|我爱mask mask) = p(mask = 吃|我爱) * p(mask = 饭|我爱)
+两个mask之间在bert中是相互独立的，但事实上，两者是相互依存的
+
+mask的概率：随机mask 15%的词汇，这些被mask的词汇中
+（1）10%替换成其他
+（2）10%原封不动
+（3）80%替换成mask
+
+实体词的mask：ERNIE, SpanBert
+
+maskDe词汇：
+（1）tokenizer，每个token变成index数字，包括符号[cls],[mask]
+（2）token index 进行3个embedding的处理（token+segment+position），三个embedding相加，最终得到一个input embedding
+（3）input embedding进入encoder层（包括多头注意力机制+FNN），然后再 *N（6，1,1，24）
+（4）对于encoder层输出的符号，接入linear层：
+a. [cls]:接linear层，然后做cls的二分类
+b. [mask]:接linear层，然后做一个softmax，在bert的词表（22128个词）中挑选出最有可能的词汇
+
+
+
+
+
+
+
+4. 微调BERT，提升BERT在下游任务中的效果
+
+
+5. 代码解析

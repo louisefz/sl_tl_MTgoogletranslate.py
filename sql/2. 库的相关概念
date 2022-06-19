@@ -1,0 +1,20 @@
+1. mysql自带的库
+（1）information_schema:虚拟库，不占硬盘内存，在local文件中找不到，存的是数据库启动的一些参数
+（2）performance——schema：存的是mysql相关的性能参数
+（3）mysql：权限库
+（4）test：测试库
+以上系统自带库都不是我们要用的
+
+2. 数据库的命名规则：
+区分大小写
+唯一性
+不能使用关键字，就像python
+不能使用纯数字
+128字符maximum![](../../../../../../var/folders/y0/fcybmly556qdvcfxq5v37d7c0000gn/T/TemporaryItems/NSIRD_screencaptureui_TDyhcY/截屏2021-12-13 下午8.55.41.png)
+
+3. 省略库的sql语法
+如果忘记了直接用
+help create 回车
+help database 回车
+[]中括号里的内容是可有可无的，其他的部分都是必须要有的
+{database|schema}  |代表或者
